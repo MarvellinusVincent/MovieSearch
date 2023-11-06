@@ -13,7 +13,7 @@ The following **required** functionality is completed:
 * [x] User can click the IMDB Link in each movie to go to the link in the website
 * [x] User can click the share button to share the movie's link and the movie's name based on the share of their choosing
 * [x] User can click the feedback button on the top right corner of the toolbar to send an email to the developer for a feedback
-* [ ] Uses retrofit to send a request to the OMDB API
+* [x] Uses retrofit to send a request to the OMDB API
 
 The following **extensions** are implemented:
 
