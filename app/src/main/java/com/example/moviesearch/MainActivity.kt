@@ -13,6 +13,8 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moviesearch.model.DetailedMovieResponse
+import com.example.moviesearch.model.MovieOMDB
 import com.example.moviesearch.model.MovieSearchResult
 import retrofit2.Call
 import retrofit2.Callback
@@ -62,29 +64,40 @@ class MainActivity : AppCompatActivity() {
 
         /** Define the onClickListener for the search button. */
         button.setOnClickListener {
-            movieService.searchMovie(inputMovie.text.toString(), API_KEY).enqueue(object :
-                Callback<MovieSearchResult> {
-                override fun onResponse(
-                    call: Call<MovieSearchResult>,
-                    response: Response<MovieSearchResult>
-                ) {
-                    Log.i(TAG, "Response code: ${response.code()}")
-                    Log.i(TAG, "Response message: ${response.message()}")
-                    Log.i(TAG, "onResponse $response")
+            movieService.searchMovie(inputMovie.text.toString(), API_KEY).enqueue(object : Callback<MovieSearchResult> {
+                override fun onResponse(call: Call<MovieSearchResult>, response: Response<MovieSearchResult>) {
                     val body = response.body()
                     if (body == null) {
                         Log.w(TAG, "Did not receive a valid response body from the OMDB API... exiting")
                         return
                     }
                     Log.i(TAG, "body $body")
+                    for (movie in body.movies) {
+                        val imdbId = movie.imdbID
+                        movieService.searchMovieIMDB(imdbId, API_KEY).enqueue(object: Callback<DetailedMovieResponse> {
+                            override fun onResponse(call: Call<DetailedMovieResponse>, response: Response<DetailedMovieResponse>) {
+                                if (response.isSuccessful) {
+                                    val detailedMovie = response.body()
+                                    Log.i(TAG, "detailedMovie $detailedMovie")
+                                    if (detailedMovie != null) {
+                                        adapter.addDetailedMovieInfo(detailedMovie)
+                                    }
+                                }
+                            }
+
+                            override fun onFailure(call: Call<DetailedMovieResponse>, t: Throwable) {
+                                Log.e(TAG, "Failed to fetch detailed information for movie: $imdbId", t)
+                            }
+                        })
+                    }
                     adapter.submitList(body.movies)
                 }
-
                 override fun onFailure(call: Call<MovieSearchResult>, t: Throwable) {
                     Log.i(TAG, "onFailure $t")
                 }
             })
         }
+
 
         /** Observe changes in the 'shareClicked' LiveData and handle sharing. */
         movieViewModel.shareClicked.observe(this, Observer { shareClicked ->
@@ -113,4 +126,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
+
 }

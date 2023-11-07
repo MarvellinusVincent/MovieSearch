@@ -14,6 +14,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.moviesearch.model.MovieOMDB
 import com.example.moviesearch.databinding.MovieItemBinding
+import com.example.moviesearch.model.DetailedMovieResponse
 
 /**
  * An adapter for the RecyclerView to display movie items.
@@ -25,6 +26,7 @@ class MovieAdapter(
     val context: Context,
     private val viewModel: MovieViewModel
 ) : ListAdapter<MovieOMDB, MovieAdapter.ItemViewHolder>(MovieDiffItemCallback()) {
+    private val detailedMovieList: MutableList<DetailedMovieResponse> = mutableListOf()
 
     /**
      * Creates a new item view holder by inflating the corresponding layout.
@@ -37,6 +39,11 @@ class MovieAdapter(
         return ItemViewHolder.inflateFrom(parent)
     }
 
+    fun addDetailedMovieInfo(detailedMovie: DetailedMovieResponse) {
+        detailedMovieList.add(detailedMovie)
+        notifyDataSetChanged()
+    }
+
     /**
      * Binds movie data to the item view holder.
      *
@@ -45,7 +52,8 @@ class MovieAdapter(
      */
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item, context, viewModel)
+        val detailedMovie = detailedMovieList.getOrNull(position) // Get detailed movie info if available
+        holder.bind(item, detailedMovie, context, viewModel)
     }
 
     /**
@@ -76,10 +84,9 @@ class MovieAdapter(
          * @param context The Android application context.
          * @param viewModel The ViewModel for managing movie data.
          */
-        fun bind(movie: MovieOMDB, context: Context, viewModel: MovieViewModel) {
+        fun bind(movie: MovieOMDB, detailedMovie: DetailedMovieResponse?, context: Context, viewModel: MovieViewModel) {
             binding.movieName.text = movie.title
             binding.movieYear.text = movie.year
-            binding.movieType.text = movie.type
             val imdbLink = "https://www.imdb.com/title/${movie.imdbID}"
             binding.imdbLink.text = imdbLink
             binding.imdbLink.paintFlags = binding.imdbLink.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -101,7 +108,12 @@ class MovieAdapter(
                 val intent = Intent(Intent.ACTION_VIEW, imdbUri)
                 context.startActivity(intent)
             }
+            detailedMovie?.let {
+                binding.movieRunTime.text = detailedMovie.runtime
+                binding.movieGenre.text = detailedMovie.genre
+                binding.movieRatings.text = detailedMovie.ratings.toString()
+                binding.imdbRating.text = detailedMovie.imdbRating
+            }
         }
     }
 }
-

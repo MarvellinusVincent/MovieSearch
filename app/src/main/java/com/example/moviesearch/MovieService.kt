@@ -1,5 +1,6 @@
 package com.example.moviesearch
 
+import com.example.moviesearch.model.DetailedMovieResponse
 import com.example.moviesearch.model.MovieSearchResult
 import retrofit2.Call
 import retrofit2.http.GET
@@ -21,4 +22,10 @@ public interface MovieService {
         @Query("s") movieTitle: String,
         @Query("apikey") apiKey: String
     ): Call<MovieSearchResult>
+
+    @GET("/")
+    fun searchMovieIMDB(
+        @Query("i") imbdId: String,
+        @Query("apikey") apiKey: String
+    ): Call<DetailedMovieResponse>
 }

@@ -15,6 +15,6 @@ data class MovieOMDB(
     @SerializedName("Title") var title: String,
     @SerializedName("Poster") var poster: String,
     @SerializedName("Year") var year: String,
-    @SerializedName("Type") var type: String,
     @SerializedName("imdbID") var imdbID: String
+
 )

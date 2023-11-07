@@ -32,9 +32,10 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/imdbLink"
             tools:srcCompat="@tools:sample/avatars" />
 
         <!-- TextView for displaying the movie year -->
@@ -48,16 +49,64 @@
             app:layout_constraintTop_toBottomOf="@+id/movieName"
             tools:text="Movie Year" />
 
-        <!-- TextView for displaying the movie type -->
+        <!-- TextView for displaying the movie run time -->
         <TextView
-            android:id="@+id/movieType"
+            android:id="@+id/movieRunTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="15dp"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintStart_toEndOf="@+id/movieYear"
+            app:layout_constraintTop_toBottomOf="@+id/movieName"
+            tools:text="Movie Run Time" />
+
+        <!-- Ratingbar for displaying a star -->
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:numStars="1"
+            android:rating="1.0"
+            app:layout_constraintStart_toEndOf="@id/movieRunTime"
+            app:layout_constraintTop_toTopOf="@id/imdbRating"
+            app:layout_constraintBottom_toBottomOf="@id/imdbRating"/>
+
+        <!-- TextView for displaying the imdb rating-->
+        <TextView
+            android:id="@+id/imdbRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintStart_toEndOf="@+id/ratingBar"
+            app:layout_constraintTop_toBottomOf="@+id/movieName"
+            tools:text="imdbRating" />
+
+        <!-- TextView for displaying the movie genre -->
+        <TextView
+            android:id="@+id/movieGenre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textColor="@android:color/darker_gray"
             app:layout_constraintStart_toStartOf="@+id/movieName"
             app:layout_constraintTop_toBottomOf="@+id/movieYear"
-            tools:text="Movie Type" />
+            tools:text="Movie Genre" />
+
+        <!-- TextView for displaying the ratings-->
+        <TextView
+            android:id="@+id/movieRatings"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintStart_toStartOf="@+id/movieName"
+            app:layout_constraintTop_toBottomOf="@+id/movieGenre"
+            app:layout_constraintWidth_default="wrap"
+            tools:text="Ratings" />
 
         <!-- TextView with an IMDb link for the movie -->
         <TextView
@@ -71,7 +120,7 @@
             android:focusable="true"
             android:autoLink="web"
             app:layout_constraintStart_toStartOf="@+id/movieName"
-            app:layout_constraintTop_toBottomOf="@+id/movieType" />
+            app:layout_constraintTop_toBottomOf="@+id/movieRatings" />
 
         <!-- Floating Action Button for sharing the movie -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton

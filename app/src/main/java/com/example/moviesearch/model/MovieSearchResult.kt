@@ -12,3 +12,4 @@ data class MovieSearchResult(
     @SerializedName("totalResults") val total: Int,
     @SerializedName("Search") val movies: List<MovieOMDB>
 )
+
