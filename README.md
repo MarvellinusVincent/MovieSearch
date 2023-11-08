@@ -23,7 +23,7 @@ The following **extensions** are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='Movie-Walkthrough.gif' title='Movie-Walkthrough' width='50%' alt='Movie-Walkthrough' />
+<img src='Movie-Walkthough.gif' title='Movie-Walkthough.gif' width='50%' alt='Movie-Walkthough.gif' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
